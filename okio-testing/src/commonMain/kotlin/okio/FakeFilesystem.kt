@@ -62,12 +62,12 @@ class FakeFilesystem(
   @get:JvmName("allPaths")
   val allPaths: Set<Path>
     get() {
-      val result = mutableSetOf<Path>()
+      val result = mutableListOf<Path>()
       for (path in elements.keys) {
         if (path.isRoot) continue
         result += path
       }
-      return result
+      return result.sorted().toSet()
     }
 
   /**
@@ -76,6 +76,8 @@ class FakeFilesystem(
    *
    * Note that this may contain paths not present in [allPaths]. This occurs if a file is deleted
    * while it is still open.
+   *
+   * The returned list is ordered by the order that the paths were opened.
    */
   @get:JvmName("openPaths")
   val openPaths: List<Path>
@@ -133,7 +135,7 @@ class FakeFilesystem(
     val element = requireDirectory(canonicalPath)
 
     element.access(now = clock.now())
-    return elements.keys.filter { it.parent == canonicalPath }
+    return elements.keys.filter { it.parent == canonicalPath }.sorted()
   }
 
   override fun source(file: Path): Source {

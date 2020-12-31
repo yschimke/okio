@@ -160,7 +160,7 @@ abstract class ForwardingFilesystem(
   override fun list(dir: Path): List<Path> {
     val dir = onPathParameter(dir, "list", "dir")
     val result = delegate.list(dir)
-    return result.map { onPathResult(it, "list") }
+    return result.map { onPathResult(it, "list") }.sorted()
   }
 
   @Throws(IOException::class)
