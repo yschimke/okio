@@ -1,0 +1,17 @@
+apply plugin: 'org.jetbrains.kotlin.multiplatform'
+
+kotlin {
+  jvm {
+    withJava()
+  }
+  sourceSets {
+    jvmMain {
+      dependencies {
+        api deps.kotlin.stdLib.common
+        api deps.kotlin.time
+        api project(":okio")
+        api 'io.minio:minio:8.0.3'
+      }
+    }
+  }
+}
